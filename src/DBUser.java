@@ -70,7 +70,21 @@ public class DBUser {
         // send DB req
     }
 
-    public void get_infos(int id) {
-        // return dict
+    public String read_email(int id) {
+        // create read req
+        // send DB req
+        return "";
+    }
+
+    public String read_name(int id) {
+        // create read req
+        // send DB req
+        return "";
+    }
+
+    public Boolean read_role(int id) {
+        // create read req
+        // send DB req
+        return false;
     }
 }

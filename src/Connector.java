@@ -1,24 +1,36 @@
 public class Connector {
+    // DB data vars
 
     public Connector() {
-        //todo init
+        // init
     }
 
     public Boolean is_connected() {
-        //todo send DB simple read
-        //todo check if DB responds
+        // send DB simple read
+        // check if DB responds
         return true;
     }
 
-    public Boolean is_email_available(){
-        //todo send DB read with email
-        //todo check for matching emails
-        return true;
+    public void read(String table) {
+        String sql_req = "SELECT * FROM " + table;
+        // send request in DB
     }
 
-    public void create_account() {
-        //todo hash password
-        //todo send DB create with infos
-        //todo display (return ?) success/error
+    public void read(String table, String filter, String filter_value) {
+        String sql_req = "SELECT * FROM " + table + " WHERE " + filter + " = " + filter_value;
+        // send request in DB
     }
+
+    public void create() {
+        // create sql_req
+    }
+
+    public void update() {
+        // create sql_req
+    }
+
+    public void delete() {
+        // create sql_req
+    }
+
 }
