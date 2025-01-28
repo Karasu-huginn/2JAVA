@@ -1,3 +1,5 @@
+package db_classes;
+
 public class AppUser {
     private String email;
     private Boolean is_admin;
@@ -11,5 +13,19 @@ public class AppUser {
         name = n;
     }
 
+    public Boolean get_ss_admin() {
+        return is_admin;
+    }
 
+    public int get_sd() {
+        return id;
+    }
+
+    public String get_name() {
+        return name;
+    }
+
+    public String get_email() {
+        return email;
+    }
 }

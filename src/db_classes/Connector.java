@@ -1,3 +1,5 @@
+package db_classes;
+
 public class Connector {
     // DB data vars
 

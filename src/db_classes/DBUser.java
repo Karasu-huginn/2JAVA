@@ -1,3 +1,5 @@
+package db_classes;
+
 public class DBUser {
 
     public DBUser() {
@@ -16,10 +18,11 @@ public class DBUser {
         // display (return ?) success/error
     }
 
-    public void login(String login, String pwd) {
+    public int login(String login, String pwd) {
         // ask DB with login and pwd
         // create infos dict & return
         // handle login fail
+        return 0;
     }
 
     // mod = modifying user
