@@ -1,16 +1,18 @@
 package db_classes;
 
+import java.util.Dictionary;
+
 public class AppUser {
     private String email;
     private Boolean is_admin;
     private int id;
     private String name;
 
-    public AppUser(String e, Boolean is_a, int i, String n) {
-        email = e;
-        is_admin = is_a;
-        id = i;
-        name = n;
+    public AppUser(Dictionary<String, String> infos) {
+        email = infos.get("email");
+        is_admin = Boolean.parseBoolean(infos.get("is_admin"));
+        id = Integer.parseInt(infos.get("id"));
+        name = infos.get("name");
     }
 
     public Boolean get_is_admin() {

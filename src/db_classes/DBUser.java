@@ -1,28 +1,54 @@
 package db_classes;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 public class DBUser {
+    public static final String red_text = "\u001B[31m";
 
     public DBUser() {
         // init
     }
 
-    public Boolean is_email_whitelisted(){
-        // send DB read with email
-        // check for matching emails
-        return true;
+    public Boolean is_email_whitelisted(Connector connector, String email){
+        String sql_value = connector.read("WL_EMAIL","email","email", email);
+        return (sql_value.isEmpty());
     }
 
-    public void create_account(String login, String name, String pwd) {
-        // hash password
-        // send DB create with infos
-        // display (return ?) success/error
+    public void create_account(Connector connector, String login, String name, String pwd) {
+        int h_pwd = pwd.hashCode();
+        String values = "'" + login + "','" + name + "','" + h_pwd + "',false";
+        connector.create("USER", "email, name, password, is_admin", values);
+        System.out.println("User " + login + " created successfully.");
     }
 
-    public int login(String login, String pwd) {
-        // ask DB with login and pwd
-        // create infos dict & return
-        // handle login fail
-        return 0;
+    public Dictionary<String, String> login(Connector connector, String login, String pwd) {
+        Dictionary<String, String> infos = new Hashtable<>();
+        infos.put("id","");
+        infos.put("email","");
+        infos.put("name","");
+        infos.put("is_admin","");
+
+        String sql_login = connector.read("USER", "email", "email", login);
+        if(sql_login.isEmpty()) {
+            System.out.println(red_text + "No user with this email registered.");
+            return infos;
+        }
+        String sql_pwd = connector.read("USER", "password", "email", login);
+        int p_sql_pwd = Integer.parseInt(sql_pwd);
+        int h_pwd = pwd.hashCode();
+        if(h_pwd != p_sql_pwd) {
+            System.out.println(red_text + "Wrong password.");
+            return infos;
+        }
+        String sql_id = connector.read("USER", "id", "email", login);
+        String sql_name = connector.read("USER", "name", "email", login);
+        String sql_role = connector.read("USER", "is_admin", "email", login);
+        infos.put("id",sql_id);
+        infos.put("email",sql_login);
+        infos.put("name",sql_name);
+        infos.put("is_admin",sql_role);
+        return infos;
     }
 
     // mod = modifying user

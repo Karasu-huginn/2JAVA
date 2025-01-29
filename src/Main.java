@@ -4,6 +4,7 @@ import db_classes.DBUser;
 import installer.DBMaker;
 
 import java.sql.SQLException;
+import java.util.Dictionary;
 
 public class Main {
     public static final String red_text = "\u001B[31m";
@@ -25,13 +26,8 @@ public class Main {
         DBUser db_user = new DBUser();
         String password = "";
         String login = "";
-        int user_id = db_user.login(login, password);
-        AppUser app_user = new AppUser(
-                db_user.read_email(user_id),
-                db_user.read_role(user_id),
-                user_id,
-                db_user.read_name(user_id)
-        );
+        Dictionary<String, String> user_infos = db_user.login(connector, login, password);
+        AppUser app_user = new AppUser(user_infos);
 
     }
 }

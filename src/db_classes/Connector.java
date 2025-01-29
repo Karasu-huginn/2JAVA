@@ -51,11 +51,16 @@ public class Connector {
         try {
             ResultSet result_set = statement.executeQuery(sql_req);
             java.sql.ResultSetMetaData rsmd = result_set.getMetaData();
-            while (result_set.next()) {
-                for(int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    column_name = rsmd.getColumnName(i);
-                    value = result_set.getString(column_name);
-                }
+            if(!result_set.next()) {
+                return "";
+            }
+            else {
+                do {
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                        column_name = rsmd.getColumnName(i);
+                        value = result_set.getString(column_name);
+                    }
+                } while (result_set.next());
             }
         } catch (SQLException e) {
             e.fillInStackTrace();
