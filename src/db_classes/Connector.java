@@ -1,10 +1,23 @@
 package db_classes;
 
+import java.sql.*;
+
 public class Connector {
     // DB data vars
+    Connection connection;
+    String url;
+    String id;
+    String password;
 
-    public Connector() {
-        // init
+    public Connector(String u, String i, String pwd) {
+        url = u+"/java_mreq_db_test";
+        id = i;
+        password = pwd;
+    }
+
+    public void db_connect() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection(url, id, password);
     }
 
     public Boolean is_connected() {

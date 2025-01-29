@@ -13,11 +13,11 @@ public class AppUser {
         name = n;
     }
 
-    public Boolean get_ss_admin() {
+    public Boolean get_is_admin() {
         return is_admin;
     }
 
-    public int get_sd() {
+    public int get_id() {
         return id;
     }
 
