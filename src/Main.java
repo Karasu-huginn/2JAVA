@@ -23,11 +23,10 @@ public class Main {
             new DBMaker(db_url, db_id, db_pwd);
             System.out.println(green_text + "DB CREATED.");
         }
-        DBUser db_user = new DBUser();
+        DBUser db_user = new DBUser(connector);
         String password = "";
         String login = "";
-        Dictionary<String, String> user_infos = db_user.login(connector, login, password);
+        Dictionary<String, String> user_infos = db_user.login(login, password);
         AppUser app_user = new AppUser(user_infos);
-
     }
 }

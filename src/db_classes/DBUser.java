@@ -5,24 +5,25 @@ import java.util.Hashtable;
 
 public class DBUser {
     public static final String red_text = "\u001B[31m";
+    Connector connector;
 
-    public DBUser() {
-        // init
+    public DBUser(Connector c) {
+        connector = c;
     }
 
-    public Boolean is_email_whitelisted(Connector connector, String email){
+    public Boolean is_email_whitelisted(String email){
         String sql_value = connector.read("WL_EMAIL","email","email", email);
         return (sql_value.isEmpty());
     }
 
-    public void create_account(Connector connector, String login, String name, String pwd) {
+    public void create_account(String login, String name, String pwd) {
         int h_pwd = pwd.hashCode();
         String values = "'" + login + "','" + name + "','" + h_pwd + "',false";
         connector.create("USER", "email, name, password, is_admin", values);
         System.out.println("User " + login + " created successfully.");
     }
 
-    public Dictionary<String, String> login(Connector connector, String login, String pwd) {
+    public Dictionary<String, String> login(String login, String pwd) {
         Dictionary<String, String> infos = new Hashtable<>();
         infos.put("id","");
         infos.put("email","");
@@ -52,68 +53,93 @@ public class DBUser {
     }
 
     // mod = modifying user
-    public void update_id(Boolean is_mod_admin) throws IllegalAccessException {
+    public void update_id(Boolean is_mod_admin, int id, String new_id) {
         if (!is_mod_admin) {
-            throw new IllegalAccessException("Must be admin to update.");
+            System.out.println(red_text + "Must be admin to update.");
+            return;
         }
-        // send DB update id req
+        String s_id = String.valueOf(id);
+        String id_availability = connector.read("USER", "id", "id", new_id);
+        if(id_availability.isEmpty()) {
+            connector.update("USER","id", new_id,s_id);
+        }
+        else {
+            System.out.println(red_text + "This id is already in use.");
+        }
 
     }
 
-    public void update_email(Boolean is_mod_admin, int mod_id, int id) throws IllegalAccessException {
-        if (!is_mod_admin || mod_id != id) {
-            throw new IllegalAccessException("Must be admin or account's owner to update.");
+    public void update_email(Boolean is_mod_admin, int mod_id, int id, String email) {
+        if (!is_mod_admin && mod_id != id) {
+            System.out.println(red_text + "Must be admin or account's owner to update.");
+            return;
         }
-        // send DB update email req
+        String s_id = String.valueOf(id);
+        String id_availability = connector.read("USER", "email", "email", email);
+        if(id_availability.isEmpty()) {
+            connector.update("USER","email", email,s_id);
+        }
+        else {
+            System.out.println(red_text + "This email is already in use.");
+        }
     }
 
-    public void update_name(Boolean is_mod_admin, int mod_id, int id) throws IllegalAccessException {
-        if (!is_mod_admin || mod_id != id) {
-            throw new IllegalAccessException("Must be admin or account's owner to update.");
+    public void update_name(Boolean is_mod_admin, int mod_id, int id, String name) {
+        if (!is_mod_admin && mod_id != id) {
+            System.out.println(red_text + "Must be admin or account's owner to update.");
+            return;
         }
-        // send DB update name req
+        String s_id = String.valueOf(id);
+        connector.update("USER","name", name, s_id);
 
     }
 
-    public void update_role(Boolean is_mod_admin) throws IllegalAccessException {
+    public void update_role(Boolean is_mod_admin, int id, Boolean role) {
         if (!is_mod_admin) {
-            throw new IllegalAccessException("Must be admin to update.");
+            System.out.println(red_text + "Must be admin to update.");
+            return;
         }
-        // send DB update role req
+        String s_id = String.valueOf(id);
+        String s_role = role ? "1" : "0";
+        connector.update("USER","is_admin", s_role, s_id);
 
     }
 
-    public void update_password(Boolean is_mod_admin, int mod_id, int id) throws IllegalAccessException {
-        if (!is_mod_admin || mod_id != id) {
-            throw new IllegalAccessException("Must be admin or account's owner to update.");
+    public void update_password(Boolean is_mod_admin, int mod_id, int id, String pwd) {
+        if (!is_mod_admin && mod_id != id) {
+            System.out.println(red_text + "Must be admin or account's owner to update.");
+            return;
         }
-        // send DB update pwd req
-
+        String s_id = String.valueOf(id);
+        int h_pass = pwd.hashCode();
+        pwd = String.valueOf(h_pass);
+        connector.update("USER","password", pwd, s_id);
     }
 
-    public void delete_user(Boolean is_mod_admin, int del_id, int id) throws IllegalAccessException {
-        if (!is_mod_admin || del_id != id) {
-            throw new IllegalAccessException("Must be admin to delete another account.");
+    public void delete_user(Boolean is_mod_admin, int del_id, int id) {
+        if (!is_mod_admin && del_id != id) {
+            System.out.println(red_text + "Must be admin to delete another account.");
+            return;
         }
-        // create delete request
-        // send DB req
+        String s_id = String.valueOf(id);
+        connector.delete("USER", s_id);
     }
 
     public String read_email(int id) {
-        // create read req
-        // send DB req
-        return "";
+        String s_id = String.valueOf(id);
+        String sql_value = connector.read("USER", "email", "id", s_id);
+        return sql_value;
     }
 
     public String read_name(int id) {
-        // create read req
-        // send DB req
-        return "";
+        String s_id = String.valueOf(id);
+        String sql_value = connector.read("USER", "email", "id", s_id);
+        return sql_value;
     }
 
     public Boolean read_role(int id) {
-        // create read req
-        // send DB req
-        return false;
+        String s_id = String.valueOf(id);
+        String sql_value = connector.read("USER", "email", "id", s_id);
+        return Boolean.valueOf(sql_value);
     }
 }
