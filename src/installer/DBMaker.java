@@ -10,8 +10,8 @@ public class DBMaker {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connect = DriverManager.getConnection(url, id, password);
             statement = connect.createStatement();
-            statement.executeUpdate("create database java_mreq_db_test");
-            statement.execute("use java_mreq_db_test");
+            statement.executeUpdate("create database java_mreq_db");
+            statement.execute("use java_mreq_db");
 
         }
         catch (SQLException | ClassNotFoundException e) {
@@ -22,12 +22,22 @@ public class DBMaker {
     }
 
     public void create_tables() {
+        create_wl_email_table();
         create_user_table();
         create_store_table();
         create_store_user_table();
         create_inventory_table();
         create_item_table();
         create_inventory_item_table();
+    }
+
+    public void create_wl_email_table() {
+        try {
+            statement.execute("create table WL_EMAIL(" +
+                    "email varchar(100) primary key AUTO_INCREMENT )");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void create_user_table() {

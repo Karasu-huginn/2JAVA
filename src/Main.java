@@ -9,7 +9,7 @@ public class Main {
     public static final String red_text = "\u001B[31m";
     public static final String green_text = "\u001B[32m";
     public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:3306"; //remove _test
+        String db_url = "jdbc:mysql://localhost:3306";
         String db_id = "root";
         String db_pwd = "admin";
 

@@ -3,21 +3,21 @@ package db_classes;
 import java.sql.*;
 
 public class Connector {
-    // DB data vars
-    Connection connection;
+    Statement statement;
     String url;
     String id;
     String password;
 
     public Connector(String u, String i, String pwd) {
-        url = u+"/java_mreq_db_test";
+        url = u+"/java_mreq_db";
         id = i;
         password = pwd;
     }
 
     public void db_connect() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection(url, id, password);
+        Connection connection = DriverManager.getConnection(url, id, password);
+        statement = connection.createStatement();
     }
 
     public Boolean is_connected() {
@@ -26,14 +26,28 @@ public class Connector {
         return true;
     }
 
-    public void read(String table) {
+    public String read(String table) {
         String sql_req = "SELECT * FROM " + table;
-        // send request in DB
+
+        try {
+            statement.executeQuery(sql_req);
+        } catch (SQLException e) {
+            e.fillInStackTrace();
+            throw new RuntimeException(e);
+        }
+        return "";
     }
 
-    public void read(String table, String filter, String filter_value) {
+    public String read(String table, String filter, String filter_value) {
         String sql_req = "SELECT * FROM " + table + " WHERE " + filter + " = " + filter_value;
-        // send request in DB
+
+        try {
+            statement.executeQuery(sql_req);
+        } catch (SQLException e) {
+            e.fillInStackTrace();
+            throw new RuntimeException(e);
+        }
+        return "";
     }
 
     public void create() {
