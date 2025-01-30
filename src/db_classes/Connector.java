@@ -49,14 +49,11 @@ public class Connector {
         System.out.println(sql_req);
         String column_name;
         String value = "QUERY_ERROR";
-        System.out.println("cp1");
         try {
             Connection connection = DriverManager.getConnection(url, id, password);
             Statement statement = connection.createStatement();
             ResultSet result_set = statement.executeQuery(sql_req);
-            System.out.println("cp2");
             java.sql.ResultSetMetaData rsmd = result_set.getMetaData();
-            System.out.println("cp3");
             if(!result_set.next()) {
                 return "";
             }
@@ -133,6 +130,17 @@ public class Connector {
             throw new RuntimeException(e);
         }
         return outputs;
+    }
+
+    public void special_update(String sql_req) {
+        try {
+            Connection connection = DriverManager.getConnection(url, id, password);
+            Statement statement = connection.createStatement();
+            statement.execute(sql_req);
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
