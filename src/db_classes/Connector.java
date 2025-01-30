@@ -99,4 +99,25 @@ public class Connector {
         }
     }
 
+    public List<String> special_read(String sql_req) {
+        String column_name;
+        String value;
+        List<String> outputs = new ArrayList<>();
+        try {
+            ResultSet result_set = statement.executeQuery(sql_req);
+            java.sql.ResultSetMetaData rsmd = result_set.getMetaData();
+            while (result_set.next()) {
+                for(int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    column_name = rsmd.getColumnName(i);
+                    value = result_set.getString(column_name);
+                    outputs.add(value);
+                }
+            }
+        } catch (SQLException e) {
+            e.fillInStackTrace();
+            throw new RuntimeException(e);
+        }
+        return outputs;
+    }
+
 }
