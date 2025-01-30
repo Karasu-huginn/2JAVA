@@ -58,7 +58,7 @@ public class DBMaker {
             statement.execute("create table STORE(" +
                     "id int(5) primary key AUTO_INCREMENT," +
                     "name varchar(50) not null," +
-                    "inventory_id int(5) not null )");
+                    "inventory_id int(5) )");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -16,6 +16,10 @@ public class DBUser {
         return (sql_value.isEmpty());
     }
 
+    public void whitelist_email() {
+        // to do
+    }
+
     public void create_account(String login, String name, String pwd) {
         int h_pwd = pwd.hashCode();
         String values = "'" + login + "','" + name + "','" + h_pwd + "',false";
