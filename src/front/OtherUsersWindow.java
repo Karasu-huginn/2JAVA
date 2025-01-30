@@ -105,7 +105,17 @@ public class OtherUsersWindow {
     }
 
     public static void main(String[] args) {
-        AppUser user = new AppUser("test@example.com", true, 1, "John Doe");
-        new OtherUsersWindow(user);
+        String db_url = "jdbc:mysql://localhost:8889";
+        String db_id = "root";
+        String db_pwd = "root";
+
+        String login = "test@example.com";
+        String password = "motdepasse1234";
+
+        Connector connector = new Connector(db_url,db_id, db_pwd);
+        DBUser db_user = new DBUser(connector);
+        Dictionary<String, String> user_infos = db_user.login(login, password);
+        AppUser user = new AppUser(user_infos);
+        new Window(user);
     }
 }
