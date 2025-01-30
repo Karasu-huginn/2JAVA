@@ -16,8 +16,17 @@ public class DBUser {
         return (sql_value.isEmpty());
     }
 
-    public void whitelist_email() {
-        // to do
+    public void whitelist_email(Boolean is_mod_admin, String email) {
+        if (!is_mod_admin) {
+            System.out.println(red_text + "Must be admin to update.");
+            return;
+        }
+        String email_available = connector.read("WL_EMAIL", "email", "email", email);
+        if(!email_available.isEmpty()) {
+            System.out.println(red_text + "This id is already in use.");
+            return;
+        }
+        connector.create("WL_EMAIL", "email", "'"+email+"'");
     }
 
     public void create_account(String login, String name, String pwd) {

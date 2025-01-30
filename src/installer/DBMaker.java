@@ -8,16 +8,10 @@ public class DBMaker {
     public DBMaker(String url, String id, String password) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("class used");
             Connection connect = DriverManager.getConnection(url, id, password);
-            System.out.println("connection created");
             statement = connect.createStatement();
-            System.out.println("statement created");
             statement.executeUpdate("create database java_mreq_db");
-            System.out.println("Database created");
             statement.execute("use java_mreq_db");
-            System.out.println("db used");
-
         }
         catch (SQLException | ClassNotFoundException e) {
             e.fillInStackTrace();

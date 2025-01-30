@@ -1,10 +1,12 @@
 package front;
 
+import db_classes.Connector;
 import db_classes.DBUser;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Dictionary;
 
 public class LoginWindow {
     public static void main(String[] args) {
@@ -70,10 +72,14 @@ public class LoginWindow {
                 String username = userText.getText();
                 String password = new String(passwordText.getPassword());
 
-                DBUser dbUser = new DBUser();
-                int userId = dbUser.login(username, password);
+                String db_url = "jdbc:mysql://localhost:3306";
+                String db_id = "root";
+                String db_pwd = "admin";
+                Connector connector = new Connector(db_url, db_id, db_pwd);
+                DBUser dbUser = new DBUser(connector);
+                Dictionary<String, String> user_infos = dbUser.login(username, password);
 
-                if (userId > 0) {
+                if (!user_infos.isEmpty()) {
                     JOptionPane.showMessageDialog(panel, "Login Successful!");
                     frame.dispose();
                 } else {
