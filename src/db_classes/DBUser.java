@@ -43,21 +43,21 @@ public class DBUser {
         infos.put("name","");
         infos.put("is_admin","");
 
-        String sql_login = connector.read("USER", "email", "email", login);
+        String sql_login = connector.read("USER", "email", "email", "'"+login+"'");
         if(sql_login.isEmpty()) {
             System.out.println(red_text + "No user with this email registered.");
             return infos;
         }
-        String sql_pwd = connector.read("USER", "password", "email", login);
+        String sql_pwd = connector.read("USER", "password", "email", "'"+login+"'");
         int p_sql_pwd = Integer.parseInt(sql_pwd);
         int h_pwd = pwd.hashCode();
         if(h_pwd != p_sql_pwd) {
             System.out.println(red_text + "Wrong password.");
             return infos;
         }
-        String sql_id = connector.read("USER", "id", "email", login);
-        String sql_name = connector.read("USER", "name", "email", login);
-        String sql_role = connector.read("USER", "is_admin", "email", login);
+        String sql_id = connector.read("USER", "id", "email", "'"+login+"'");
+        String sql_name = connector.read("USER", "name", "email", "'"+login+"'");
+        String sql_role = connector.read("USER", "is_admin", "email", "'"+login+"'");
         infos.put("id",sql_id);
         infos.put("email",sql_login);
         infos.put("name",sql_name);
@@ -88,9 +88,9 @@ public class DBUser {
             return;
         }
         String s_id = String.valueOf(id);
-        String id_availability = connector.read("USER", "email", "email", email);
+        String id_availability = connector.read("USER", "email", "email", "'"+email+"'");
         if(id_availability.isEmpty()) {
-            connector.update("USER","email", email,s_id);
+            connector.update("USER","email", "'"+email+"'",s_id);
         }
         else {
             System.out.println(red_text + "This email is already in use.");
@@ -103,7 +103,7 @@ public class DBUser {
             return;
         }
         String s_id = String.valueOf(id);
-        connector.update("USER","name", name, s_id);
+        connector.update("USER","name", "'"+name+"'", s_id);
 
     }
 
@@ -126,7 +126,7 @@ public class DBUser {
         String s_id = String.valueOf(id);
         int h_pass = pwd.hashCode();
         pwd = String.valueOf(h_pass);
-        connector.update("USER","password", pwd, s_id);
+        connector.update("USER","password", "'"+pwd+"'", s_id);
     }
 
     public void delete_user(Boolean is_mod_admin, int del_id, int id) {
