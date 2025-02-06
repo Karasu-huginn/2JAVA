@@ -6,12 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Dictionary;
 
-public class LoginWindow {
+public class SigninWindow {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Login");
-        frame.setSize(350, 180);
+        JFrame frame = new JFrame("Sign Up");
+        frame.setSize(350, 250);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -27,48 +26,58 @@ public class LoginWindow {
     }
 
     private static void placeComponents(JPanel panel, JFrame frame) {
-        JLabel userLabel = new JLabel("User:");
-        userLabel.setBounds(20, 20, 80, 25);
-        userLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        userLabel.setForeground(new Color(166, 123, 91));
-        panel.add(userLabel);
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setBounds(20, 20, 80, 25);
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        nameLabel.setForeground(new Color(166, 123, 91));
+        panel.add(nameLabel);
 
-        JTextField userText = new JTextField(20);
-        userText.setBounds(120, 20, 180, 25);
-        panel.add(userText);
+        JTextField nameText = new JTextField(20);
+        nameText.setBounds(120, 20, 180, 25);
+        panel.add(nameText);
+
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setBounds(20, 60, 80, 25);
+        emailLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        emailLabel.setForeground(new Color(166, 123, 91));
+        panel.add(emailLabel);
+
+        JTextField emailText = new JTextField(20);
+        emailText.setBounds(120, 60, 180, 25);
+        panel.add(emailText);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(20, 60, 80, 25);
+        passwordLabel.setBounds(20, 100, 80, 25);
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 14));
         passwordLabel.setForeground(new Color(166, 123, 91));
         panel.add(passwordLabel);
 
         JPasswordField passwordText = new JPasswordField(20);
-        passwordText.setBounds(120, 60, 180, 25);
+        passwordText.setBounds(120, 100, 180, 25);
         panel.add(passwordText);
 
-        JButton loginButton = new JButton("Login");
-        loginButton.setBounds(50, 100, 120, 30);
-        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loginButton.setBackground(new Color(166, 123, 91));
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setFocusPainted(false);
-        loginButton.setBorder(BorderFactory.createLineBorder(new Color(130, 90, 60), 2));
+        JButton signupButton = new JButton("Sign Up");
+        signupButton.setBounds(60, 150, 120, 30);
+        signupButton.setFont(new Font("Arial", Font.BOLD, 14));
+        signupButton.setBackground(new Color(166, 123, 91));
+        signupButton.setForeground(Color.WHITE);
+        signupButton.setFocusPainted(false);
+        signupButton.setBorder(BorderFactory.createLineBorder(new Color(130, 90, 60), 2));
 
-        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        signupButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                loginButton.setBackground(new Color(195, 224, 220));
+                signupButton.setBackground(new Color(195, 224, 220));
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                loginButton.setBackground(new Color(166, 123, 91));
+                signupButton.setBackground(new Color(166, 123, 91));
             }
         });
 
-        panel.add(loginButton);
+        panel.add(signupButton);
 
-        JButton signinButton = new JButton("Signin");
-        signinButton.setBounds(180, 100, 120, 30);
+        JButton signinButton = new JButton("Sign In");
+        signinButton.setBounds(190, 150, 120, 30);
         signinButton.setFont(new Font("Arial", Font.BOLD, 14));
         signinButton.setBackground(new Color(166, 123, 91));
         signinButton.setForeground(Color.WHITE);
@@ -88,34 +97,35 @@ public class LoginWindow {
         signinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                SigninWindow.main(new String[]{});
+                LoginWindow.main(new String[]{});
             }
         });
 
         panel.add(signinButton);
 
-        loginButton.addActionListener(new ActionListener() {
+        signupButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String email = userText.getText();
+                String name = nameText.getText();
+                String email = emailText.getText();
                 String password = new String(passwordText.getPassword());
+
+                if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 String db_url = "jdbc:mysql://localhost:8889";
                 String db_id = "root";
-                String db_pwd = "admin";
+                String db_pwd = "root";
                 Connector connector = new Connector(db_url, db_id, db_pwd);
                 DBUser dbUser = new DBUser(connector);
-                Dictionary<String, String> user_infos = dbUser.login(email, password);
+                boolean success = dbUser.create_account(name, email, password);
 
-                if (!user_infos.isEmpty()) {
-                    JOptionPane.showMessageDialog(panel, "Login Successful!");
+                if (success) {
+                    JOptionPane.showMessageDialog(panel, "Registration Successful!");
                     frame.dispose();
-                    if ("admin".equals(user_infos.get("role"))) {
-                        AdminWindow.main(new String[]{});
-                    } else {
-                        Window.main(new String[]{});
-                    }
                 } else {
-                    JOptionPane.showMessageDialog(panel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "Registration Failed", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

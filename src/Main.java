@@ -26,8 +26,10 @@ public class Main {
         }
 
         DBUser db_user = new DBUser(connector);
-        String password = "";
-        String login = "";
+        String password = "admin";
+        String login = "admin1@test.com";
+        String name = "admin1";
+        db_user.create_account(login, name, password);
         Dictionary<String, String> user_infos = db_user.login(login, password);
         AppUser app_user = new AppUser(user_infos);
     }

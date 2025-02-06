@@ -29,11 +29,12 @@ public class DBUser {
         connector.create("WL_EMAIL", "email", "'"+email+"'");
     }
 
-    public void create_account(String login, String name, String pwd) {
+    public boolean create_account(String login, String name, String pwd) {
         int h_pwd = pwd.hashCode();
         String values = "'" + login + "','" + name + "','" + h_pwd + "',false";
         connector.create("USER", "email, name, password, is_admin", values);
         System.out.println("User " + login + " created successfully.");
+        return true;
     }
 
     public Dictionary<String, String> login(String login, String pwd) {
