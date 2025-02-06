@@ -5,7 +5,9 @@ import db_classes.AppUser;
 import db_classes.DBUser;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
+import db_classes.Connector;
 
 public class OtherUsersWindow {
     private JFrame frame;
@@ -29,7 +31,7 @@ public class OtherUsersWindow {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(new Color(250, 235, 215));
 
-        DBUser dbUser = new DBUser();
+        DBUser dbUser = new DBUser(new Connector("jdbc:mysql://localhost:8889", "root", "root"));
         List<UserInfo> otherUsersInfo = getOtherUsersInfo(dbUser, currentUser.get_id());
 
         if (otherUsersInfo.isEmpty()) {
@@ -109,8 +111,8 @@ public class OtherUsersWindow {
         String db_id = "root";
         String db_pwd = "root";
 
-        String login = "test@example.com";
-        String password = "motdepasse1234";
+        String login = "admin1@test.com";
+        String password = "admin";
 
         Connector connector = new Connector(db_url,db_id, db_pwd);
         DBUser db_user = new DBUser(connector);

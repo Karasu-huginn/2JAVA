@@ -61,7 +61,8 @@ public class Window {
     }
 
     private void openInventoryWindow() {
-        JOptionPane.showMessageDialog(frame, "Opening 'Inventory' window...");
+        new InventoryWindow(currentUser);
+        frame.dispose();
     }
 
     private void logout() {
@@ -72,10 +73,10 @@ public class Window {
     public static void main(String[] args) {
         String db_url = "jdbc:mysql://localhost:8889";
         String db_id = "root";
-        String db_pwd = "root";
+        String db_pwd = "admin";
 
-        String login = "test@example.com";
-        String password = "motdepasse1234";
+        String login = "admin1@test.com";
+        String password = "admin";
 
         Connector connector = new Connector(db_url,db_id, db_pwd);
         DBUser db_user = new DBUser(connector);
