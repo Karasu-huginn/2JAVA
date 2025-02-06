@@ -5,18 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Connector {
-    String url;
-    String id;
-    String password;
+    String m_url;
+    String m_id;
+    String m_password;
 
     public Connector(String u, String i, String pwd) {
-        url = u+"/java_mreq_db";
-        id = i;
-        password = pwd;
+        m_url = u+"/java_mreq_db";
+        m_id = i;
+        m_password = pwd;
     }
 
-    public void db_connect() throws ClassNotFoundException {
+    public void db_connect() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
+        Statement statement = connection.createStatement();
     }
 
     public List<String> read(String table, String column) {
@@ -26,7 +28,7 @@ public class Connector {
         String value;
         List<String> outputs = new ArrayList<>();
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             ResultSet result_set = statement.executeQuery(sql_req);
             java.sql.ResultSetMetaData rsmd = result_set.getMetaData();
@@ -50,7 +52,7 @@ public class Connector {
         String column_name;
         String value = "QUERY_ERROR";
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             ResultSet result_set = statement.executeQuery(sql_req);
             java.sql.ResultSetMetaData rsmd = result_set.getMetaData();
@@ -76,7 +78,7 @@ public class Connector {
         String sql_req = "INSERT INTO " + table + "(" + columns + ") VALUES (" + values + ")";
         System.out.println(sql_req);
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             statement.execute(sql_req);
         }
@@ -86,9 +88,10 @@ public class Connector {
     }
 
     public void update(String table, String column, String value, String id) {
-        String sql_req = "UPDATE "+ table +" SET " + column + " = '" + value + "' WHERE " + table + ".id = " + id;
+        String sql_req = "UPDATE "+ table +" SET " + column + " = " + value + " WHERE " + table + ".id = " + id;
+        System.out.println(sql_req);
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             statement.execute(sql_req);
         }
@@ -99,8 +102,9 @@ public class Connector {
 
     public void delete(String table, String id) {
         String sql_req = "DELETE FROM " + table + " WHERE " + table + ".id = " + id + ";";
+        System.out.println(sql_req);
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             statement.execute(sql_req);
         }
@@ -114,7 +118,7 @@ public class Connector {
         String value;
         List<String> outputs = new ArrayList<>();
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             ResultSet result_set = statement.executeQuery(sql_req);
             java.sql.ResultSetMetaData rsmd = result_set.getMetaData();
@@ -134,7 +138,7 @@ public class Connector {
 
     public void special_update(String sql_req) {
         try {
-            Connection connection = DriverManager.getConnection(url, id, password);
+            Connection connection = DriverManager.getConnection(m_url, m_id, m_password);
             Statement statement = connection.createStatement();
             statement.execute(sql_req);
         }

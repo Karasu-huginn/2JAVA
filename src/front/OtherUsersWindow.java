@@ -2,15 +2,18 @@ package front;
 
 import javax.swing.*;
 import db_classes.AppUser;
+import db_classes.Connector;
 import db_classes.DBUser;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
 
 public class OtherUsersWindow {
     private JFrame frame;
     private JButton goBackHomeButton;
     private AppUser currentUser;
+    private DBUser dbUser;
 
     public OtherUsersWindow(AppUser user) {
         currentUser = user;
@@ -29,7 +32,6 @@ public class OtherUsersWindow {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(new Color(250, 235, 215));
 
-        DBUser dbUser = new DBUser();
         List<UserInfo> otherUsersInfo = getOtherUsersInfo(dbUser, currentUser.get_id());
 
         if (otherUsersInfo.isEmpty()) {
@@ -105,12 +107,12 @@ public class OtherUsersWindow {
     }
 
     public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
+        String db_url = "jdbc:mysql://localhost:3306";
         String db_id = "root";
-        String db_pwd = "root";
+        String db_pwd = "admin";
 
-        String login = "test@example.com";
-        String password = "motdepasse1234";
+        String login = "admin@example.com";
+        String password = "motdepasse";
 
         Connector connector = new Connector(db_url,db_id, db_pwd);
         DBUser db_user = new DBUser(connector);

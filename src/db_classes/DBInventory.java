@@ -23,11 +23,13 @@ public class DBInventory {
             System.out.println(red_text + "Store doesn't exists.");
             return;
         }
-        if(!store_has_inv.isEmpty()) {
-            System.out.println(red_text + "Store already has an inventory linked.");
+        try {       // refactor needed
+            store_has_inv.isEmpty();
+        } catch (RuntimeException e) {
+            connector.create("INVENTORY","store_id", s_store_id);
             return;
         }
-        connector.create("INVENTORY","store_id", s_store_id);
+        System.out.println(red_text + "Store already has an inventory linked.");
     }
 
     public void change_store(Boolean is_admin, int inv_id, int store_id) {
@@ -75,6 +77,14 @@ public class DBInventory {
         String s_capacity = String.valueOf(capacity);
         String inv_exists = connector.read("INVENTORY", "id", "id", s_inv_id);
         String item_exists = connector.read("ITEM", "id", "id", s_item_id);
+        if(capacity < 0) {
+            System.out.println(red_text + "Capacity can't be lower than 0.");
+            return;
+        }
+        if(capacity < quantity) {
+            System.out.println(red_text + "Capacity must be higher than quantity.");
+            return;
+        }
         if(inv_exists.isEmpty()) {
             System.out.println(red_text + "Inventory doesn't exist.");
             return;

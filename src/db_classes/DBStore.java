@@ -37,7 +37,7 @@ public class DBStore {
         connector.create("STORE_USER", "store_id, user_id",s_store_id+","+s_user_id);
     }
 
-    public void create_store(Boolean is_admin, int id, String name) {
+    public void create_store(Boolean is_admin, String name) {
         if (!is_admin) {
             System.out.println(red_text + "Must be admin to create a store.");
             return;
@@ -89,8 +89,9 @@ public class DBStore {
             System.out.println(red_text + "A store is already linked to this inventory.");
             return;
         }
-
+        //connector.special_update("UPDATE STORE SET inventory_id = 1 WHERE STORE.id = 1");
         connector.update("STORE", "inventory_id", s_inv_id, s_id);
+        //UPDATE STORE SET inventory_id = 1 WHERE STORE.id = 1
     }
 
     public List<String> get_employees(Boolean is_admin, int user_id, int store_id) {

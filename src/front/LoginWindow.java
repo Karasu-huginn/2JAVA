@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.Dictionary;
 
 public class LoginWindow {
-    public static void main(String[] args) {
+    public LoginWindow() {
         JFrame frame = new JFrame("Login");
         frame.setSize(350, 180);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

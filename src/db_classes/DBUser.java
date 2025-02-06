@@ -12,8 +12,8 @@ public class DBUser {
     }
 
     public Boolean is_email_whitelisted(String email){
-        String sql_value = connector.read("WL_EMAIL","email","email", email);
-        return (sql_value.isEmpty());
+        String sql_value = connector.read("WL_EMAIL","email","email", "'"+email+"'");
+        return (!sql_value.isEmpty());
     }
 
     public void whitelist_email(Boolean is_mod_admin, String email) {
@@ -21,7 +21,7 @@ public class DBUser {
             System.out.println(red_text + "Must be admin to update.");
             return;
         }
-        String email_available = connector.read("WL_EMAIL", "email", "email", email);
+        String email_available = connector.read("WL_EMAIL", "email", "email", "'"+email+"'");
         if(!email_available.isEmpty()) {
             System.out.println(red_text + "This id is already in use.");
             return;
@@ -30,6 +30,10 @@ public class DBUser {
     }
 
     public void create_account(String login, String name, String pwd) {
+        if(!is_email_whitelisted(login)) {
+            System.out.println(red_text + "Email is not whitelisted.");
+            return;
+        }
         int h_pwd = pwd.hashCode();
         String values = "'" + login + "','" + name + "','" + h_pwd + "',false";
         connector.create("USER", "email, name, password, is_admin", values);

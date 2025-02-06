@@ -70,12 +70,12 @@ public class Window {
     }
 
     public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
+        String db_url = "jdbc:mysql://localhost:3306";
         String db_id = "root";
-        String db_pwd = "root";
+        String db_pwd = "admin";
 
-        String login = "test@example.com";
-        String password = "motdepasse1234";
+        String login = "admin@example.com";      // TO CHANGE
+        String password = "motdepasse";     // TO CHANGE
 
         Connector connector = new Connector(db_url,db_id, db_pwd);
         DBUser db_user = new DBUser(connector);

@@ -47,6 +47,7 @@ public class DBMaker {
                     "name varchar(50) not null," +
                     "password varchar(250) not null, " +
                     "is_admin bool not null)");
+            statement.execute("insert into USER(email, name, password, is_admin) values ('admin@example.com','Admin',-1147511999,1)");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

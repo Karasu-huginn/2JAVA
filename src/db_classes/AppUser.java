@@ -10,7 +10,7 @@ public class AppUser {
 
     public AppUser(Dictionary<String, String> infos) {
         email = infos.get("email");
-        is_admin = Boolean.parseBoolean(infos.get("is_admin"));
+        is_admin = (Integer.parseInt(infos.get("is_admin")) != 0);
         id = Integer.parseInt(infos.get("id"));
         name = infos.get("name");
     }

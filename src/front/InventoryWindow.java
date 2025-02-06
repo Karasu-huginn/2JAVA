@@ -99,7 +99,7 @@ public class InventoryWindow {
         JButton updateStockButton = new JButton("Update Stock");
         updateStockButton.addActionListener(e -> {
             // Admins should be the only ones who can change stock
-            if (currentUser.is_admin()) {
+            if (currentUser.get_is_admin()) {
                 openStockChangeDialog(inventoryTable);
             } else {
                 JOptionPane.showMessageDialog(frame, "Only admins can change stock.");
@@ -172,12 +172,12 @@ public class InventoryWindow {
     }
 
     public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
+        String db_url = "jdbc:mysql://localhost:3306";
         String db_id = "root";
-        String db_pwd = "root";
+        String db_pwd = "admin";
 
-        String login = "test@example.com";
-        String password = "motdepasse1234";
+        String login = "admin@example.com";      // TO CHANGE
+        String password = "motdepasse";     // TO CHANGE
 
         Connector connector = new Connector(db_url, db_id, db_pwd);
         DBUser db_user = new DBUser(connector);
