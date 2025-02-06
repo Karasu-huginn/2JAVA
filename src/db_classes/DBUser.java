@@ -160,4 +160,9 @@ public class DBUser {
         String sql_value = connector.read("USER", "email", "id", s_id);
         return Boolean.valueOf(sql_value);
     }
+
+    public String get_user_store(int id) {
+        String s_id = String.valueOf(id);
+        return connector.read("STORE_USER","store_id","user_id",s_id);
+    }
 }
