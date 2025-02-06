@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import db_classes.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManageUsersWindow {
@@ -67,7 +68,7 @@ public class ManageUsersWindow {
     }
 
     private void loadUsers(DefaultTableModel model) {
-        List<AppUser> users = db_user.get_user_store();        //change
+        List<AppUser> users = db_user.get_other_users();
         for (AppUser user : users) {
             if (!user.get_id().equals(currentUser.get_id()) || currentUser.get_is_admin()) {
                 model.addRow(new Object[]{
@@ -75,11 +76,12 @@ public class ManageUsersWindow {
                         user.get_email(),
                         user.get_name(),
                         user.get_is_admin() ? "Admin" : "User",
-                        user.get_store()
+                        db_user.get_user_store()
                 });
             }
         }
     }
+
 
     private void openCreateUserWindow() {
         //new CreateUserWindow(currentUser);
