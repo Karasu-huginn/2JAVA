@@ -3,6 +3,7 @@ package front;
 import javax.swing.*;
 import db_classes.AppUser;
 import db_classes.DBUser;
+import db_classes.DBStore;
 import db_classes.Connector;
 import java.awt.*;
 

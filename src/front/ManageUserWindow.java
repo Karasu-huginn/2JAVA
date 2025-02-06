@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import db_classes.AppUser;
 import db_classes.DBUser;
+import db_classes.DBStore;
 
 import java.awt.*;
 import java.util.List;
@@ -16,10 +17,12 @@ public class ManageUsersWindow {
     private JButton deleteUserButton;
     private AppUser currentUser;
     private DBUser dbUser;
+    private DBStore dbStore;
 
-    public ManageUsersWindow(AppUser user, DBUser dbUser) {
+    public ManageUsersWindow(AppUser user, DBUser dbUser, DBStore dbStore) {
         this.currentUser = user;
         this.dbUser = dbUser;
+        this.dbStore = dbStore;
         frame = new JFrame("Manage Users");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 400);
@@ -64,12 +67,17 @@ public class ManageUsersWindow {
         List<AppUser> users = dbUser.getAllUsers();
         for (AppUser user : users) {
             if (!user.get_id().equals(currentUser.get_id()) || currentUser.get_is_admin()) {
+                String storeName = "";
+                if (user.get_store() != null) {
+                    storeName = dbStore.getStoreNameById(user.get_store());
+                }
+
                 model.addRow(new Object[]{
                         user.get_id(),
                         user.get_email(),
                         user.get_name(),
                         user.get_is_admin() ? "Admin" : "User",
-                        user.get_store()
+                        storeName
                 });
             }
         }
