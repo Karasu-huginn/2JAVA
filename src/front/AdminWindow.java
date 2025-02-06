@@ -77,12 +77,12 @@ public class AdminWindow {
     }
 
     private void openCreateStoreWindow() {
-        new CreateStoreWindow(currentUser);
+        //new CreateStoreWindow(currentUser);
         frame.dispose();
     }
 
     private void openManageInventoryWindow() {
-        new ManageInventoryWindow(currentUser);
+        //new ManageInventoryWindow(currentUser);
         frame.dispose();
     }
 
