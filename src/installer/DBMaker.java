@@ -10,7 +10,7 @@ public class DBMaker {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connect = DriverManager.getConnection(url, id, password);
             statement = connect.createStatement();
-            statement.executeUpdate("create database IF NOT EXISTS java_mreq_db");
+            statement.executeUpdate("create database java_mreq_db");
             statement.execute("use java_mreq_db");
         }
         catch (SQLException | ClassNotFoundException e) {

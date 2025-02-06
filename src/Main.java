@@ -1,6 +1,4 @@
-import db_classes.AppUser;
-import db_classes.Connector;
-import db_classes.DBUser;
+import db_classes.*;
 import installer.DBMaker;
 
 import java.sql.SQLException;
@@ -19,7 +17,7 @@ public class Main {
         Connector connector = new Connector(db_url, db_id, db_pwd);
 
         try {
-            connector.db_connect();  // Ensure this method throws SQLException if needed
+            connector.db_connect();
         }
         catch (ClassNotFoundException e) {
             System.out.println(red_text + "ERROR ON DRIVER CLASS. PLEASE ENSURE DRIVER IS ON PATH"+reset_text);
