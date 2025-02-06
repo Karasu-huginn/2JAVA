@@ -1,11 +1,9 @@
 package front;
 
 import javax.swing.*;
-import db_classes.AppUser;
-import db_classes.DBUser;
-import db_classes.DBStore;
-import db_classes.DBInventory;
-import db_classes.Connector;
+
+import db_classes.*;
+
 import java.awt.*;
 import java.util.Dictionary;
 import java.util.List;
@@ -16,17 +14,22 @@ public class InventoryWindow {
     private JButton viewUsersButton;
     private JButton inventoryButton;
     private AppUser currentUser;
-    private DBStore dbStore;
+    private DBUser db_user;
+    private DBItem db_item;
+    private DBStore db_store;
+    private DBInventory db_inventory;
 
-    public InventoryWindow(AppUser user) {
+    public InventoryWindow(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
         currentUser = user;
+        DBUser db_user = db_u;
+        DBItem db_item = db_it;
+        DBStore db_store = db_s;
+        DBInventory db_inventory = db_in;
         frame = new JFrame("Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
         frame.setLayout(new BorderLayout());
         frame.getContentPane().setBackground(new Color(250, 235, 215));
-
-        dbStore = new DBStore(new Connector("jdbc:mysql://localhost:8889", "root", "root"));
 
         JLabel welcomeLabel = new JLabel("Welcome, " + user.get_name() + "!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Serif", Font.BOLD, 18));
@@ -61,7 +64,7 @@ public class InventoryWindow {
     }
 
     private void openOtherUsersWindow() {
-        new OtherUsersWindow(currentUser);
+        new OtherUsersWindow(currentUser, db_user, db_item, db_store, db_inventory);
         frame.dispose();
     }
 
@@ -119,7 +122,7 @@ public class InventoryWindow {
     // Method to get store ID for the user from DBStore
     private int getStoreIdForUser(int userId) {
         // Assume the user is assigned to a store and get the store_id from DBStore
-        List<String> storeIds = dbStore.get_employees(true, userId, -1); // -1 to fetch all stores for the user
+        List<String> storeIds = db_store.get_employees(true, userId, -1); // -1 to fetch all stores for the user
         if (storeIds.isEmpty()) {
             return -1; // No store found for the user
         }
@@ -171,20 +174,7 @@ public class InventoryWindow {
         System.exit(0);
     }
 
-    public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
-        String db_id = "root";
-        String db_pwd = "root";
-
-        String login = "admin1@test.com";
-        String password = "admin";
-
-        Connector connector = new Connector(db_url, db_id, db_pwd);
-        DBUser db_user = new DBUser(connector);
-        Dictionary<String, String> user_infos = db_user.login(login, password);
-
-        // Create AppUser from user_infos
-        AppUser user = new AppUser(user_infos);
-        new InventoryWindow(user);
+    public static void main(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
+        new InventoryWindow(user, db_u, db_it, db_s, db_in);
     }
 }

@@ -1,8 +1,9 @@
 package front;
 
 import javax.swing.*;
-import db_classes.AppUser;
-import db_classes.DBUser;
+
+import db_classes.*;
+
 import java.awt.*;
 
 public class WhitelistEmailWindow {
@@ -12,10 +13,17 @@ public class WhitelistEmailWindow {
     private AppUser currentUser;
     private DBUser dbUser;
     private static final String STORE_NAME = "DefaultStore";
+    private DBUser db_user;
+    private DBItem db_item;
+    private DBStore db_store;
+    private DBInventory db_inventory;
 
-    public WhitelistEmailWindow(AppUser user, DBUser dbUser) {
+    public WhitelistEmailWindow(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
         this.currentUser = user;
-        this.dbUser = dbUser;
+        DBUser db_user = db_u;
+        DBItem db_item = db_it;
+        DBStore db_store = db_s;
+        DBInventory db_inventory = db_in;
 
         frame = new JFrame("Whitelist Email");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

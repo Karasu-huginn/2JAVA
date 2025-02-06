@@ -1,9 +1,9 @@
 package front;
 
 import javax.swing.*;
-import db_classes.AppUser;
-import db_classes.DBUser;
-import db_classes.Connector;
+
+import db_classes.*;
+
 import java.awt.*;
 
 public class AdminWindow {
@@ -14,8 +14,16 @@ public class AdminWindow {
     private JButton manageInventoryButton;
     private JButton logoutButton;
     private AppUser currentUser;
+    private DBUser db_user;
+    private DBItem db_item;
+    private DBStore db_store;
+    private DBInventory db_inventory;
 
-    public AdminWindow(AppUser user) {
+    public AdminWindow(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
+        DBUser db_user = db_u;
+        DBItem db_item = db_it;
+        DBStore db_store = db_s;
+        DBInventory db_inventory = db_in;
         currentUser = user;
         frame = new JFrame("Admin Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,12 +75,12 @@ public class AdminWindow {
     }
 
     private void openManageUsersWindow() {
-        new ManageUsersWindow(currentUser);
+        new ManageUsersWindow(currentUser, db_user, db_item, db_store, db_inventory);
         frame.dispose();
     }
 
     private void openWhitelistEmailWindow() {
-        new WhitelistEmailWindow(currentUser);
+        new WhitelistEmailWindow(currentUser, db_user, db_item, db_store, db_inventory);
         frame.dispose();
     }
 
@@ -91,17 +99,7 @@ public class AdminWindow {
         System.exit(0);
     }
 
-    public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
-        String db_id = "root";
-        String db_pwd = "root";
-
-        String login = "admin1@test.com";
-        String password = "admin";
-
-        Connector connector = new Connector(db_url, db_id, db_pwd);
-        DBUser db_user = new DBUser(connector);
-        AppUser user = new AppUser(db_user.login(login, password));
-        new AdminWindow(user);
+    public static void main(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
+        new AdminWindow(user, db_u, db_it, db_s, db_in);
     }
 }

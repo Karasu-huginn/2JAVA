@@ -2,8 +2,8 @@ package front;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import db_classes.AppUser;
-import db_classes.DBUser;
+
+import db_classes.*;
 
 import java.awt.*;
 import java.util.List;
@@ -15,11 +15,17 @@ public class ManageUsersWindow {
     private JButton updateUserButton;
     private JButton deleteUserButton;
     private AppUser currentUser;
-    private DBUser dbUser;
+    private DBUser db_user;
+    private DBItem db_item;
+    private DBStore db_store;
+    private DBInventory db_inventory;
 
-    public ManageUsersWindow(AppUser user, DBUser dbUser) {
+    public ManageUsersWindow(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
         this.currentUser = user;
-        this.dbUser = dbUser;
+        DBUser db_user = db_u;
+        DBItem db_item = db_it;
+        DBStore db_store = db_s;
+        DBInventory db_inventory = db_in;
         frame = new JFrame("Manage Users");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 400);
@@ -61,7 +67,7 @@ public class ManageUsersWindow {
     }
 
     private void loadUsers(DefaultTableModel model) {
-        List<AppUser> users = dbUser.getAllUsers();
+        List<AppUser> users = db_user.get_user_store();        //change
         for (AppUser user : users) {
             if (!user.get_id().equals(currentUser.get_id()) || currentUser.get_is_admin()) {
                 model.addRow(new Object[]{
@@ -87,8 +93,8 @@ public class ManageUsersWindow {
         int selectedRow = usersTable.getSelectedRow();
         if (selectedRow != -1) {
             int userId = (int) usersTable.getValueAt(selectedRow, 0);
-            if (userId != currentUser.get_id() && !dbUser.read_role(userId)) {
-                dbUser.delete_user(currentUser.get_is_admin(), currentUser.get_id(), userId);
+            if (userId != currentUser.get_id() && !db_user.read_role(userId)) {
+                db_user.delete_user(currentUser.get_is_admin(), currentUser.get_id(), userId);
                 ((DefaultTableModel) usersTable.getModel()).removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(frame, "Admins cannot delete another admin or themselves.", "Error", JOptionPane.ERROR_MESSAGE);

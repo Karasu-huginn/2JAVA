@@ -1,21 +1,29 @@
 package front;
 
 import javax.swing.*;
-import db_classes.AppUser;
-import db_classes.DBUser;
+
+import db_classes.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
-import db_classes.Connector;
 
 public class OtherUsersWindow {
     private JFrame frame;
     private JButton goBackHomeButton;
     private AppUser currentUser;
+    private DBUser db_user;
+    private DBItem db_item;
+    private DBStore db_store;
+    private DBInventory db_inventory;
 
-    public OtherUsersWindow(AppUser user) {
+    public OtherUsersWindow(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
         currentUser = user;
+        DBUser db_user = db_u;
+        DBItem db_item = db_it;
+        DBStore db_store = db_s;
+        DBInventory db_inventory = db_in;
         frame = new JFrame("Other Users' Info");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 400);
@@ -102,22 +110,11 @@ public class OtherUsersWindow {
     }
 
     private void goBackHome() {
-        new Window(currentUser);
+        new Window(currentUser, db_user, db_item, db_store, db_inventory);
         frame.dispose();
     }
 
-    public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
-        String db_id = "root";
-        String db_pwd = "root";
-
-        String login = "admin1@test.com";
-        String password = "admin";
-
-        Connector connector = new Connector(db_url,db_id, db_pwd);
-        DBUser db_user = new DBUser(connector);
-        Dictionary<String, String> user_infos = db_user.login(login, password);
-        AppUser user = new AppUser(user_infos);
-        new Window(user);
+    public static void main(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
+        new Window(user, db_u, db_it, db_s, db_in);
     }
 }

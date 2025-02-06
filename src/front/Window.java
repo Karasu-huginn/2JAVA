@@ -1,9 +1,9 @@
 package front;
 
 import javax.swing.*;
-import db_classes.AppUser;
-import db_classes.DBUser;
-import db_classes.Connector;
+
+import db_classes.*;
+
 import java.awt.*;
 import java.util.Dictionary;
 
@@ -14,9 +14,17 @@ public class Window {
     private JButton viewUsersButton;
     private JButton inventoryButton;
     private AppUser currentUser;
+    private DBUser db_user;
+    private DBItem db_item;
+    private DBStore db_store;
+    private DBInventory db_inventory;
 
-    public Window(AppUser user) {
+    public Window(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
         currentUser = user;
+        DBUser db_user = db_u;
+        DBItem db_item = db_it;
+        DBStore db_store = db_s;
+        DBInventory db_inventory = db_in;
         frame = new JFrame("Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -56,12 +64,12 @@ public class Window {
     }
 
     private void openOtherUsersWindow() {
-        new OtherUsersWindow(currentUser);
+        new OtherUsersWindow(currentUser, db_user, db_item, db_store, db_inventory);
         frame.dispose();
     }
 
     private void openInventoryWindow() {
-        new InventoryWindow(currentUser);
+        new InventoryWindow(currentUser, db_user, db_item, db_store, db_inventory);
         frame.dispose();
     }
 
@@ -70,18 +78,7 @@ public class Window {
         System.exit(0);
     }
 
-    public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:8889";
-        String db_id = "root";
-        String db_pwd = "admin";
-
-        String login = "admin1@test.com";
-        String password = "admin";
-
-        Connector connector = new Connector(db_url,db_id, db_pwd);
-        DBUser db_user = new DBUser(connector);
-        Dictionary<String, String> user_infos = db_user.login(login, password);
-        AppUser user = new AppUser(user_infos);
-        new Window(user);
+    public static void main(AppUser user, DBUser db_u, DBItem db_it, DBStore db_s, DBInventory db_in) {
+        new Window(user, db_u, db_it, db_s, db_in);
     }
 }

@@ -1,7 +1,7 @@
 package front;
 
-import db_classes.Connector;
-import db_classes.DBUser;
+import db_classes.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -103,16 +103,20 @@ public class LoginWindow {
                 String db_id = "root";
                 String db_pwd = "admin";
                 Connector connector = new Connector(db_url, db_id, db_pwd);
-                DBUser dbUser = new DBUser(connector);
-                Dictionary<String, String> user_infos = dbUser.login(email, password);
+                DBUser db_user = new DBUser(connector);
+                DBItem db_item = new DBItem(connector);
+                DBStore db_store = new DBStore(connector);
+                DBInventory db_inventory = new DBInventory(connector);
+                Dictionary<String, String> user_infos = db_user.login(email, password);
+                AppUser user = new AppUser(user_infos);
 
                 if (!user_infos.isEmpty()) {
                     JOptionPane.showMessageDialog(panel, "Login Successful!");
                     frame.dispose();
                     if ("admin".equals(user_infos.get("role"))) {
-                        AdminWindow.main(new String[]{});
+                        AdminWindow.main(user, db_user, db_item, db_store, db_inventory);
                     } else {
-                        Window.main(new String[]{});
+                        Window.main(user, db_user, db_item, db_store, db_inventory);
                     }
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
