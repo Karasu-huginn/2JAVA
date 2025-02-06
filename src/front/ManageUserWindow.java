@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import db_classes.AppUser;
 import db_classes.DBUser;
-import db_classes.Connector;
+
 import java.awt.*;
 import java.util.List;
 
@@ -76,11 +76,11 @@ public class ManageUsersWindow {
     }
 
     private void openCreateUserWindow() {
-        new CreateUserWindow(currentUser);
+        //new CreateUserWindow(currentUser);
     }
 
     private void openUpdateUserWindow() {
-        new UpdateUserWindow(currentUser, getSelectedUserId());
+        //new UpdateUserWindow(currentUser, getSelectedUserId());
     }
 
     private void deleteUser() {
