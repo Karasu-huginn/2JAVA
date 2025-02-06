@@ -11,6 +11,11 @@ public class DBStore {
         connector = c;
     }
 
+    public String read_name(int id) {
+        String s_id = String.valueOf(id);
+        return connector.read("STORE", "name", "id", s_id);
+    }
+
     public void add_employee(Boolean is_admin, int user_id, int store_id) {
         String s_user_id = String.valueOf(user_id);
         String s_store_id = String.valueOf(store_id);
