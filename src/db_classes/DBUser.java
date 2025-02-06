@@ -30,10 +30,6 @@ public class DBUser {
     }
 
     public void create_account(String login, String name, String pwd) {
-        if(!is_email_whitelisted(login)) {
-            System.out.println(red_text + "Email is not whitelisted.");
-            return;
-        }
         int h_pwd = pwd.hashCode();
         String values = "'" + login + "','" + name + "','" + h_pwd + "',false";
         connector.create("USER", "email, name, password, is_admin", values);

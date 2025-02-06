@@ -172,12 +172,12 @@ public class InventoryWindow {
     }
 
     public static void main(String[] args) {
-        String db_url = "jdbc:mysql://localhost:3306";
+        String db_url = "jdbc:mysql://localhost:8889";
         String db_id = "root";
-        String db_pwd = "admin";
+        String db_pwd = "root";
 
-        String login = "admin@example.com";      // TO CHANGE
-        String password = "motdepasse";     // TO CHANGE
+        String login = "admin1@test.com";
+        String password = "admin";
 
         Connector connector = new Connector(db_url, db_id, db_pwd);
         DBUser db_user = new DBUser(connector);

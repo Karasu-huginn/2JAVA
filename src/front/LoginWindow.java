@@ -48,7 +48,7 @@ public class LoginWindow {
         panel.add(passwordText);
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(110, 100, 120, 30);
+        loginButton.setBounds(50, 100, 120, 30);
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(new Color(166, 123, 91));
         loginButton.setForeground(Color.WHITE);
@@ -67,21 +67,53 @@ public class LoginWindow {
 
         panel.add(loginButton);
 
+        JButton signinButton = new JButton("Signin");
+        signinButton.setBounds(180, 100, 120, 30);
+        signinButton.setFont(new Font("Arial", Font.BOLD, 14));
+        signinButton.setBackground(new Color(166, 123, 91));
+        signinButton.setForeground(Color.WHITE);
+        signinButton.setFocusPainted(false);
+        signinButton.setBorder(BorderFactory.createLineBorder(new Color(130, 90, 60), 2));
+
+        signinButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                signinButton.setBackground(new Color(195, 224, 220));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                signinButton.setBackground(new Color(166, 123, 91));
+            }
+        });
+
+        signinButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                SigninWindow.main(new String[]{});
+            }
+        });
+
+        panel.add(signinButton);
+
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();
+                String email = userText.getText();
                 String password = new String(passwordText.getPassword());
 
-                String db_url = "jdbc:mysql://localhost:3306";
+                String db_url = "jdbc:mysql://localhost:8889";
                 String db_id = "root";
                 String db_pwd = "admin";
                 Connector connector = new Connector(db_url, db_id, db_pwd);
                 DBUser dbUser = new DBUser(connector);
-                Dictionary<String, String> user_infos = dbUser.login(username, password);
+                Dictionary<String, String> user_infos = dbUser.login(email, password);
 
                 if (!user_infos.isEmpty()) {
                     JOptionPane.showMessageDialog(panel, "Login Successful!");
                     frame.dispose();
+                    if ("admin".equals(user_infos.get("role"))) {
+                        AdminWindow.main(new String[]{});
+                    } else {
+                        Window.main(new String[]{});
+                    }
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
                 }

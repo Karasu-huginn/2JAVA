@@ -1,4 +1,6 @@
-import db_classes.*;
+import db_classes.AppUser;
+import db_classes.Connector;
+import db_classes.DBUser;
 import installer.DBMaker;
 
 import java.sql.SQLException;
@@ -37,17 +39,5 @@ public class Main {
         String login = "admin@example.com";
         Dictionary<String, String> user_infos = db_user.login(login, password);
         AppUser app_user = new AppUser(user_infos);
-
-        System.out.println(green_text+"Connected."+reset_text);
-        //db_user.whitelist_email(app_user.get_is_admin(),"user@example.com");
-        //db_user.create_account("user@example.com", "michel","motdepasse");
-        //db_store.create_store(app_user.get_is_admin(),"Paris");
-        //db_inventory.create_inventory(app_user.get_is_admin(),1);
-        db_store.add_inventory(app_user.get_is_admin(),1,1);
-        //db_user.update_name(app_user.get_is_admin(),app_user.get_id(),2,"Pierre");
-        //db_item.create_item(app_user.get_is_admin(),"Transistor", 5.99);
-        //db_store.add_employee(app_user.get_is_admin(),2,1);
-        //db_inventory.add_item(2,1,1,5,10);
-        System.out.println("Done.");
     }
 }
